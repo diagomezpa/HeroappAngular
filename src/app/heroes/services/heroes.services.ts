@@ -3,6 +3,7 @@ import { environments } from '../../../environments/environments';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { Hero } from '../interfaces/hero.interface';
+import { catchError, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class HeroesService {
@@ -12,5 +13,12 @@ export class HeroesService {
 
   getHeroes(): Observable<Hero[]> {
     return this.http.get<Hero[]>(`${this.baseUrl}/heroes`);
+  }
+
+  getHeroById(id: string): Observable<Hero | undefined> {
+    return this.http
+      .get<Hero>(`${this.baseUrl}/heroes/${id}`)
+      .pipe(catchError((error) => of(undefined)));
+    // of es una forma de crear obsevable basado que en elk valor quele decimos dentro de los parentasis
   }
 }
