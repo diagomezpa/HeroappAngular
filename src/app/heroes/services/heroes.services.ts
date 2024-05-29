@@ -21,4 +21,8 @@ export class HeroesService {
       .pipe(catchError((error) => of(undefined)));
     // of es una forma de crear obsevable basado que en elk valor quele decimos dentro de los parentasis
   }
+
+  getSUggestions(query: string): Observable<Hero[]> {
+    return this.http.get<Hero[]>(`/heroes?q=${query}&_limit=6`);
+  }
 }
