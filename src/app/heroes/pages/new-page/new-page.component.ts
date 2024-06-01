@@ -13,8 +13,8 @@ export class NewPageComponent {
 
     id: new FormControl(''), // aca crea loas propiedades que quiero que maneje el formulario
     superhero: new FormControl('', { nonNullable: true }),
-    publisher: new FormControl(''),
-    alter_ego: new FormControl<Publisher>(Publisher.DCComics),
+    publisher: new FormControl<Publisher>(Publisher.DCComics),
+    alter_ego: new FormControl(''),
     first_appearance: new FormControl(''),
     characters: new FormControl(''),
     alt_img: new FormControl(''),
@@ -24,4 +24,8 @@ export class NewPageComponent {
     { id: 'DC Comics', desc: 'DC - Comics' },
     { id: 'Marvel Comics', desc: 'Marvel - Comics' },
   ];
+
+  onSubmit(): void {
+    console.log({});
+  }
 }
