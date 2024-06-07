@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Hero, Publisher } from '../../interfaces/hero.interface';
 import { HeroesService } from '../../services/heroes.services';
 import { ActivatedRoute, Router } from '@angular/router';
-import { switchMap } from 'rxjs';
+import { filter, switchMap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
@@ -80,26 +80,26 @@ export class NewPageComponent implements OnInit {
       data: this.heroForm.value,
     });
 
-    // dialogRef
-    //   .afterClosed()
-    //   .pipe(
-    //     filter((result: boolean) => result),
-    //     switchMap(() => this.heroesService.deleteHeroById(this.currentHero.id)),
-    //     filter((wasDeleted: boolean) => wasDeleted)
-    //   )
-    //   .subscribe(() => {
-    //     this.router.navigate(['/heroes']);
-    //   });
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter((result: boolean) => result), // deja pasar si le dio en el boton ok del dialogo
+        switchMap(() => this.heroesService.deleteHeroById(this.currentHero.id)),
+        filter((wasDeleted: boolean) => wasDeleted)
+      )
+      .subscribe(() => {
+        this.router.navigate(['/heroes']);
+      });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (!result) return; // esta cosa retorna falso verdadero o undefinned
+    // dialogRef.afterClosed().subscribe((result) => {
+    //   if (!result) return; // esta cosa retorna falso verdadero o undefinned
 
-      this.heroesService
-        .deleteHeroById(this.currentHero.id)
-        .subscribe((wasDeleted) => {
-          if (wasDeleted) this.router.navigate(['/heroes']);
-        });
-    });
+    //   this.heroesService
+    //     .deleteHeroById(this.currentHero.id)
+    //     .subscribe((wasDeleted) => {
+    //       if (wasDeleted) this.router.navigate(['/heroes']);
+    //     });
+    // });
   }
 
   showSnackbar(message: string): void {
